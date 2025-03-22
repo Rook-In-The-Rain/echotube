@@ -23,10 +23,10 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			MZ0Z85iBkWEEaldi7IcA7ueHIZo=
+			ypxG7XVnkhdHcnNgCp5RnmqFKBA=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"319d19f398819161046a5762ec8700eee787219a"</string>
+			<string>cdhash H"ca9c46ed75679217477273600a9e519e6a852810"</string>
 		</dict>
 		<key>Frameworks/FlutterMacOS.framework</key>
 		<dict>
@@ -36,6 +36,42 @@
 			</data>
 			<key>requirement</key>
 			<string>cdhash H"fb73307245cc297310eba1298e7c38b194015587"</string>
+		</dict>
+		<key>Frameworks/audio_session.framework</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			KeCpld6cn0W6oILoQ3Tkwls4gIo=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"29e0a995de9c9f45baa082e84374e4c25b38808a"</string>
+		</dict>
+		<key>Frameworks/audioplayers_darwin.framework</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			DDAAG7BrHV+QCiG6qI4/r776ayc=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"0c30001bb06b1d5f900a21baa88e3fafbefa6b27"</string>
+		</dict>
+		<key>Frameworks/just_audio.framework</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			m0MZzkJ6BLnFhO7aaGcyonCuQhw=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"9b4319ce427a04b9c584eeda686732a270ae421c"</string>
+		</dict>
+		<key>Frameworks/libswiftAVFoundation.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			vG/+wrcE2vnxenLi//6PdPbBnnI=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"feb2b00ea35babbf1f8ecd2b9dd7c3523b8dd2e3" or cdhash H"bc6ffec2b704daf9f17a72e2fffe8f74f6c19e72"</string>
 		</dict>
 		<key>Frameworks/libswiftAppKit.dylib</key>
 		<dict>
@@ -199,6 +235,15 @@
 			<key>requirement</key>
 			<string>cdhash H"a91aa60521c71dd382e53441689bc0970469be1b" or cdhash H"ca87afcd93734a35a742a2182e65dd77f0e11af4"</string>
 		</dict>
+		<key>Frameworks/path_provider_foundation.framework</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			uPfpKFKWYV2O14j2oGIfySFc6+Q=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"b8f7e9285296615d8ed788f6a0621fc9215cebe4"</string>
+		</dict>
 		<key>MacOS/__preview.dylib</key>
 		<dict>
 			<key>cdhash</key>
@@ -212,10 +257,10 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			dr2Ln5PTJiGQ3Dxv4z3rcQq0XnY=
+			MZ7WzoxxxqXiswDYvt8PxcIj5Pg=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"76bd8b9f93d3262190dc3c6fe33deb710ab45e76"</string>
+			<string>cdhash H"319ed6ce8c71c6a5e2b300d8bedf0fc5c223e4f8"</string>
 		</dict>
 		<key>Resources/AppIcon.icns</key>
 		<dict>

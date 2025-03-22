@@ -1,0 +1,177 @@
+import 'package:just_audio/just_audio.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:first_app/screens/audionotifier.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class AudioPlayerWidget extends StatefulWidget{
+  const AudioPlayerWidget({super.key});
+  @override
+  // ignore: library_private_types_in_public_api
+  _AudioPlayerState createState() => _AudioPlayerState();
+
+}
+
+class _AudioPlayerState extends State<AudioPlayerWidget>{
+  late AudioPlayer _audioPlayer;
+  double _currentPosition = 0;
+  double _totalDuration = 1; 
+  bool _isPlaying = false;
+  bool _isLooping = false;
+
+  @override
+  void initState(){
+     super.initState();
+     _audioPlayer = AudioPlayer();
+     // _loadAudio("https://youtu.be/LiXYi-_MVa4");
+  }//https://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    String audioUrl = Provider.of<AudioProvider>(context).audioUrl;
+    _loadAudio(audioUrl);
+  }
+
+  Future<void> _loadAudio(audioUrl) async {
+    // await _audioPlayer.setAsset("assets/edited_bully.mov");
+    final response = await http.get(Uri.parse("http://127.0.0.1:8000/download_audio?url=$audioUrl"));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      String audioUrl = data["audio_url"];  // Get MP3 URL
+      await _audioPlayer.setUrl(audioUrl);
+      _listenToPlayback();
+    }
+  }
+
+  void _listenToPlayback() {
+    _audioPlayer.durationStream.listen((duration) {
+      if (duration != null) {
+        setState(() {
+          _totalDuration = duration.inSeconds.toDouble();
+        });
+      }
+    });
+    _audioPlayer.positionStream.listen((duration) {
+      setState(() {
+        _currentPosition = duration.inSeconds.toDouble();
+      });
+    });
+  }
+
+  void _seekTo(double value) {
+    _audioPlayer.seek(Duration(seconds: value.toInt()));  // 🔹 Seek function
+  }
+
+  void _togglePlayPause() {
+    if (_audioPlayer.playing) {
+      _audioPlayer.pause();
+    } else {
+      _audioPlayer.play();
+    }
+    setState(() => _isPlaying = _audioPlayer.playing);
+  }
+
+  void _toggleLoop(){
+    setState(() {
+        _audioPlayer.setLoopMode(
+        _audioPlayer.loopMode == LoopMode.one ? LoopMode.off : LoopMode.one
+      );
+      _isLooping = !_isLooping;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      bottomNavigationBar: Container(
+         color: Colors.black,
+         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+         child: Column(
+        mainAxisSize: MainAxisSize.min,  // Shrink to fit
+        children: [
+          SeekBarWidget(
+            currentPosition: _currentPosition,
+            totalDuration: _totalDuration,
+            onSeek: _seekTo,  // 🔹 Callback for seeking
+          ),
+          PlaybackControlsWidget(
+            isPlaying: _isPlaying,
+            onPlayPause: _togglePlayPause,  // 🔹 Callback for play/pause
+            onLoop: _toggleLoop,
+            isLooping: _isLooping,
+          ),
+        ],
+      ),
+      )
+    );
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose(); // ✅ Clean up when widget is destroyed
+    super.dispose();
+  }
+}
+
+class SeekBarWidget extends StatelessWidget{
+  final double currentPosition;
+  final double totalDuration;
+  final ValueChanged<double> onSeek;
+
+  const SeekBarWidget({
+    required this.currentPosition,
+    required this.totalDuration,
+    required this.onSeek,
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context){
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(_formatDuration(currentPosition)),
+      SizedBox(width: 600, child: Slider(value: currentPosition, min: 0, max: totalDuration, onChanged: onSeek)),
+      Text(_formatDuration(totalDuration))
+    ],
+    );
+  }
+
+    String _formatDuration(double seconds) {
+    int min = (seconds / 60).floor();
+    int sec = (seconds % 60).floor();
+    return "$min:${sec.toString().padLeft(2, '0')}";
+  }
+}
+
+class PlaybackControlsWidget extends StatelessWidget{
+  final bool isPlaying;
+  final bool isLooping;
+  final VoidCallback onLoop;
+  final VoidCallback onPlayPause;
+
+  const PlaybackControlsWidget({
+    required this.isPlaying,
+    required this.onPlayPause,
+    required this.isLooping,
+    required this.onLoop,
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext build){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton(onPressed: onPlayPause, icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow), color: Colors.white),
+        IconButton(
+          icon: Icon(
+          isLooping ? Icons.repeat_one : Icons.repeat,
+            color: isLooping ? Colors.blue : Colors.white,
+          ),
+          onPressed: onLoop,
+        ),
+      ],
+    );
+  }
+}
