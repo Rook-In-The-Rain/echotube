@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:first_app/screens/audionotifier.dart';
+import 'package:first_app/screens/utils/audionotifier.dart';
 import 'dart:convert';
 
 
@@ -21,14 +21,15 @@ class _HomePageScreenState extends State<HomePageScreen>{
     setState(() {
       _songTitle = "Fetching...";
     });
-    final uri = Uri.http("127.0.0.1:8000", "/fetch_title", {"url": _urlController.text});
+    final uri = Uri.http("127.0.0.1:8000", "/download_audio", {"url": _urlController.text});
     final response = await http.get(uri);
     final data = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
       setState(() {
+        print("Got song title!");
         _songTitle = data["title"];
-        Provider.of<AudioProvider>(context, listen: false).setAudioUrl(_urlController.text);
+        Provider.of<AudioProvider>(context, listen: false).setAudioUrl(data["audio_url"], _songTitle);
       });
     } else {
       setState(() {

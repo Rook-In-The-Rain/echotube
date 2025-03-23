@@ -1,9 +1,10 @@
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:first_app/screens/audionotifier.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:first_app/screens/utils/audionotifier.dart';
+import 'package:first_app/screens/utils/songdownload.dart';
+// import 'package:http/http.dart' as http;
+// import 'dart:convert';
 
 class AudioPlayerWidget extends StatefulWidget{
   const AudioPlayerWidget({super.key});
@@ -19,6 +20,8 @@ class _AudioPlayerState extends State<AudioPlayerWidget>{
   double _totalDuration = 1; 
   bool _isPlaying = false;
   bool _isLooping = false;
+  String _currentAudioUrl = "";
+  String _currentsongtitle = "";
 
   @override
   void initState(){
@@ -30,21 +33,36 @@ class _AudioPlayerState extends State<AudioPlayerWidget>{
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    String audioUrl = Provider.of<AudioProvider>(context).audioUrl;
-    _loadAudio(audioUrl);
-  }
-
-  Future<void> _loadAudio(audioUrl) async {
-    // await _audioPlayer.setAsset("assets/edited_bully.mov");
-    final response = await http.get(Uri.parse("http://127.0.0.1:8000/download_audio?url=$audioUrl"));
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      String audioUrl = data["audio_url"];  // Get MP3 URL
-      await _audioPlayer.setUrl(audioUrl);
-      _listenToPlayback();
+    String title =  Provider.of<AudioProvider>(context).title;
+    if(title == "") return;
+    bool isFile = Provider.of<AudioProvider>(context).isFile;
+    if(isFile){
+      String filePath_ = Provider.of<AudioProvider>(context).filePath;
+      print("GOT FILE PATH $filePath_");
+      _loadAudio(filePath_, title, isFile);
+    }
+    else{
+      String audioUrl = Provider.of<AudioProvider>(context).audioUrl;
+      _loadAudio(audioUrl, title, isFile);
     }
   }
+
+  Future<void> _loadAudio(audioUrl, title, isFile) async {
+    // await _audioPlayer.setAsset("assets/edited_bully.mov");
+    print("got video title $title as well as URL $audioUrl");
+    setState(() {
+      _currentAudioUrl = audioUrl;
+      _currentsongtitle = title;
+    });
+    if(!isFile){
+      await _audioPlayer.setUrl(_currentAudioUrl);
+    }
+    else{
+      await _audioPlayer.setFilePath(_currentAudioUrl);
+    }
+    _listenToPlayback();
+  }
+
 
   void _listenToPlayback() {
     _audioPlayer.durationStream.listen((duration) {
@@ -59,6 +77,12 @@ class _AudioPlayerState extends State<AudioPlayerWidget>{
         _currentPosition = duration.inSeconds.toDouble();
       });
     });
+  }
+
+  Future<void> _downloadSong() async {
+    if(_currentAudioUrl == "" || _currentsongtitle == "" || Provider.of<AudioProvider>(context, listen: false).isFile) return;
+    print("DOWNLOADINGGGGGG");
+    await downloadAudio(_currentAudioUrl, _currentsongtitle);
   }
 
   void _seekTo(double value) {
@@ -102,6 +126,7 @@ class _AudioPlayerState extends State<AudioPlayerWidget>{
             onPlayPause: _togglePlayPause,  // 🔹 Callback for play/pause
             onLoop: _toggleLoop,
             isLooping: _isLooping,
+            onDownload: _downloadSong,
           ),
         ],
       ),
@@ -149,12 +174,14 @@ class PlaybackControlsWidget extends StatelessWidget{
   final bool isLooping;
   final VoidCallback onLoop;
   final VoidCallback onPlayPause;
+  final Future<void> Function() onDownload;
 
   const PlaybackControlsWidget({
     required this.isPlaying,
     required this.onPlayPause,
     required this.isLooping,
     required this.onLoop,
+    required this.onDownload,
     super.key
   });
 
@@ -163,6 +190,7 @@ class PlaybackControlsWidget extends StatelessWidget{
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        IconButton(onPressed: () async { await onDownload(); print("Download completed!");}, icon: Icon(Icons.download)),
         IconButton(onPressed: onPlayPause, icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow), color: Colors.white),
         IconButton(
           icon: Icon(

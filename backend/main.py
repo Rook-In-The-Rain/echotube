@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from utils.fetch_video_data import get_video_title, get_audio_url
 import subprocess
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 import yt_dlp
 import os
 
@@ -17,11 +17,6 @@ app.add_middleware(
 )
 
 
-@app.get("/fetch_title")
-def fetch_song(url):
-    return {"title": get_video_title(url)}
-
-
 @app.get("/download_audio")
 async def download_audio(url: str):
     """Download the audio as MP3 and return its local URL."""
@@ -33,16 +28,17 @@ async def download_audio(url: str):
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        video_title = ydl.extract_info(url, download=False)["title"]
         ydl.download([url])
-
-    return {"audio_url": "http://127.0.0.1:8000/static/audio.mp3"}
+    print(video_title)
+    return JSONResponse(content={"audio_url": f"http://127.0.0.1:8000/static/audio.mp3", "title": video_title}, media_type="application/json; charset=utf-8")
 
 @app.get("/static/audio.mp3")
 async def serve_audio():
     """Serve the downloaded MP3 file."""
     file_path = f"audio.mp3"
     if os.path.exists(file_path):
-        return FileResponse(file_path, media_type="audio/mpeg", filename="audio.mp3")
+        return FileResponse(file_path, media_type="audio/mpeg", filename=f"audio.mp3")
     return {"error": "File not found"}
 
 # Run the server (if running manually)
