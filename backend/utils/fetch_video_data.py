@@ -13,3 +13,5 @@ def get_audio_url(video_url):
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(video_url, download=False)
         return info['url']
+
+# 764783247428-fa0m3a697ifggflefoidvt1be438v0fi.apps.googleusercontent.com

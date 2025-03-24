@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1074077598781-qj9b1lluejsd0sst9ntsh8hf2hbqe358.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1074077598781-qj9b1lluejsd0sst9ntsh8hf2hbqe358</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCdNaiCV3mHbA4REJX9wZnwo_XV9MqWlN0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1074077598781</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.firstApp</string>
+	<key>PROJECT_ID</key>
+	<string>harmoniaauth</string>
+	<key>STORAGE_BUCKET</key>
+	<string>harmoniaauth.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1074077598781:ios:8e9c40af5603cdc7321654</string>
+</dict>
+</plist>

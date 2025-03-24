@@ -1,0 +1,29 @@
+dependencies: \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/build/macos/Build/Intermediates.noindex/Pods.build/Debug/AppAuth.build/module.modulemap \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDAuthorizationService.m \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/Target\ Support\ Files/AppAuth/AppAuth-prefix.pch \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Cocoa.framework/Modules/module.modulemap \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Modules/module.modulemap \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDAuthorizationService.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDAuthorizationRequest.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDExternalUserAgentRequest.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDResponseTypes.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDScopes.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDAuthorizationResponse.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDDefines.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDEndSessionRequest.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDEndSessionResponse.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDErrorUtilities.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDError.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDExternalUserAgent.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDExternalUserAgentSession.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDIDToken.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDRegistrationRequest.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDRegistrationResponse.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDServiceConfiguration.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDServiceDiscovery.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDTokenRequest.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDGrantTypes.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDTokenResponse.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDURLQueryComponent.h \
+  /Users/pockchan/VS_CODE_PROJECTS/flutter-apps/youtube-podcast/first_app/macos/Pods/AppAuth/Sources/AppAuthCore/OIDURLSessionProvider.h

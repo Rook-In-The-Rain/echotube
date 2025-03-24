@@ -1,7 +1,11 @@
+import 'package:first_app/screens/utils/authprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:first_app/screens/homepage.dart';
 import 'package:first_app/screens/downloadscreen.dart';
 import 'package:first_app/screens/audioplayer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+
 
 class MainAppScreen extends StatefulWidget{
 
@@ -20,17 +24,20 @@ class _MainAppScreenState extends State<MainAppScreen>{
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
+    User? _user = Provider.of<AuthProviderClass>(context).user;
    return Scaffold(
-    appBar: AppBar(title: Text("Welcome To App")),
+    appBar: AppBar(title: Text("Welcome, ${_user?.displayName}")),
     drawer: Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          DrawerHeader(decoration: BoxDecoration(color: Colors.blue), child: Text("Drawer Head >>",  style: TextStyle(color: Colors.white, fontSize: 24))),
+          DrawerHeader(decoration: BoxDecoration(color: Colors.blue), child: Text("Cool App", style: TextStyle(color: Colors.white, fontSize: 24))),
           ListTile(leading: Icon(Icons.home), title: Text("Home"), onTap: () => _navigateToScreen(HomePageScreen())),
-          ListTile(leading: Icon(Icons.download), title: Text("Downloads"), onTap: () => _navigateToScreen(DownloadsScreen()))
+          ListTile(leading: Icon(Icons.download), title: Text("Downloads"), onTap: () => _navigateToScreen(DownloadsScreen())),
+          ListTile(leading: Icon(Icons.backspace), title: Text("Log Out"), onTap: () async => await Provider.of<AuthProviderClass>(context, listen: false).signOut())
         ],
       )
     ),

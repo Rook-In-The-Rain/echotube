@@ -1,3 +1,4 @@
+import 'package:first_app/screens/utils/authprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -21,8 +22,12 @@ class _HomePageScreenState extends State<HomePageScreen>{
     setState(() {
       _songTitle = "Fetching...";
     });
-    final uri = Uri.http("127.0.0.1:8000", "/download_audio", {"url": _urlController.text});
-    final response = await http.get(uri);
+    final String? accessToken = await Provider.of<AuthProviderClass>(context, listen: false).getAccessToken();
+    print("Got token, $accessToken");
+    // https://backend-for-podcast-app-production.up.railway.app/
+    final response = await http.post(
+    Uri.parse('https://backend-for-podcast-app-production.up.railway.app/download_audio?url=${_urlController.text}&token=$accessToken')
+  );
     final data = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
