@@ -8,6 +8,21 @@ A Flutter + FastAPI-based mobile and desktop application that allows users to st
 - 📥 **Download for Offline Use** – Save audio locally for offline playback.
 - ❤️ **Like Songs** – Save favorite songs to Firebase without downloading.
 
+## App Preview
+
+
+### Home Page
+  <img width="400" alt="Screenshot 2025-03-26 at 2 01 14 AM" src="https://github.com/user-attachments/assets/5b8a9426-e48b-4dcb-b947-2eab8112202d" />
+
+
+### Download
+  <img width="400" alt="Screenshot 2025-03-26 at 2 07 23 AM" src="https://github.com/user-attachments/assets/7f4e9c00-a417-4c5c-bb54-7151868fa1d1" />
+
+  
+### Liked Songs
+  <img width="400" alt="Screenshot 2025-03-26 at 2 02 34 AM" src="https://github.com/user-attachments/assets/418625df-37be-47db-8e92-36a121ac17a8" />
+
+
 ## Tech Stack
 
 ### Frontend:
@@ -30,6 +45,7 @@ A Flutter + FastAPI-based mobile and desktop application that allows users to st
   ```bash
   pip install -r requirements.txt
   ```
+
 
 ### Running the Backend:
 ```bash
