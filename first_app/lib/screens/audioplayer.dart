@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:first_app/screens/utils/audionotifier.dart';
 import 'package:first_app/screens/utils/songdownload.dart';
+import 'dart:io';
 // import 'package:http/http.dart' as http;
 // import 'dart:convert';
 
@@ -33,7 +34,7 @@ class _AudioPlayerState extends State<AudioPlayerWidget>{
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    String title =  Provider.of<AudioProvider>(context).title;
+    String? title =  Provider.of<AudioProvider>(context).title;
     if(title == "") return;
     bool isFile = Provider.of<AudioProvider>(context).isFile;
     if(isFile){
@@ -77,6 +78,11 @@ class _AudioPlayerState extends State<AudioPlayerWidget>{
         _currentPosition = duration.inSeconds.toDouble();
       });
     });
+  }
+
+  void _setVolume(double volume){
+    _audioPlayer.setVolume(volume);
+    Provider.of<AudioProvider>(context, listen: false).setVolume(volume);
   }
 
   Future<void> _downloadSong() async {
@@ -127,6 +133,7 @@ class _AudioPlayerState extends State<AudioPlayerWidget>{
             onLoop: _toggleLoop,
             isLooping: _isLooping,
             onDownload: _downloadSong,
+            onVolumeChange: _setVolume,
           ),
         ],
       ),
@@ -156,7 +163,7 @@ class SeekBarWidget extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(_formatDuration(currentPosition)),
-      SizedBox(width: 600, child: Slider(value: currentPosition, min: 0, max: totalDuration, onChanged: onSeek)),
+      SizedBox(width: MediaQuery.of(context).size.width * 0.7, child: Slider(value: currentPosition, min: 0, max: totalDuration, onChanged: onSeek)),
       Text(_formatDuration(totalDuration))
     ],
     );
@@ -175,6 +182,7 @@ class PlaybackControlsWidget extends StatelessWidget{
   final VoidCallback onLoop;
   final VoidCallback onPlayPause;
   final Future<void> Function() onDownload;
+  final ValueChanged<double> onVolumeChange;
 
   const PlaybackControlsWidget({
     required this.isPlaying,
@@ -182,14 +190,17 @@ class PlaybackControlsWidget extends StatelessWidget{
     required this.isLooping,
     required this.onLoop,
     required this.onDownload,
+    required this.onVolumeChange,
     super.key
   });
 
   @override
   Widget build(BuildContext build){
+    double volume = Provider.of<AudioProvider>(build, listen: false).volume;
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
+      if (Platform.isMacOS) const Spacer(flex: 3),
+        Expanded(flex: 5, child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         IconButton(onPressed: () async { await onDownload(); print("Download completed!");}, icon: Icon(Icons.download)),
         IconButton(onPressed: onPlayPause, icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow), color: Colors.white),
         IconButton(
@@ -198,7 +209,23 @@ class PlaybackControlsWidget extends StatelessWidget{
             color: isLooping ? Colors.blue : Colors.white,
           ),
           onPressed: onLoop,
-        ),
+        )
+        ])),
+            if (Platform.isMacOS) 
+              Expanded(
+                flex: 3,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 3),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.volume_up, size: 20),
+                      Expanded(
+                        child: Slider(value: volume, min: 0.0, max:1.0, onChanged: onVolumeChange),
+                      ),
+                    ],
+                  ),
+                )
+              )
       ],
     );
   }

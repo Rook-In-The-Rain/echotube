@@ -16,14 +16,15 @@ class HomePageScreen extends StatefulWidget{
 
 class _HomePageScreenState extends State<HomePageScreen>{
     final TextEditingController _urlController = TextEditingController();
-    String _songTitle = "No song";
+    String? _songTitle;
 
     Future<void> getSong() async {
     setState(() {
       _songTitle = "Fetching...";
     });
-    final String? accessToken = await Provider.of<AuthProviderClass>(context, listen: false).getAccessToken();
-    print("Got token, $accessToken");
+    final String? refreshToken = Provider.of<AuthProviderClass>(context,listen: false).refreshToken;
+    final String? accessToken = await Provider.of<AuthProviderClass>(context, listen: false).googleAccessToken;
+    print("Got token, $accessToken and refresh token, $refreshToken");
     // https://backend-for-podcast-app-production.up.railway.app/
     final response = await http.post(
     Uri.parse('https://backend-for-podcast-app-production.up.railway.app/download_audio?url=${_urlController.text}&token=$accessToken')
@@ -33,7 +34,6 @@ class _HomePageScreenState extends State<HomePageScreen>{
     if (response.statusCode == 200) {
       setState(() {
         print("Got song title!");
-        _songTitle = data["title"];
         Provider.of<AudioProvider>(context, listen: false).setAudioUrl(data["audio_url"], _songTitle);
       });
     } else {
@@ -46,6 +46,7 @@ class _HomePageScreenState extends State<HomePageScreen>{
 
   @override
   Widget build(BuildContext context){
+    _songTitle = Provider.of<AudioProvider>(context, listen: false).title;
     return Scaffold(
       appBar: AppBar(title: const Text("Welcome to homepage")),
       body: Center(child:

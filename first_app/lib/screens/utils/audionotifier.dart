@@ -6,15 +6,17 @@ import 'package:first_app/screens/utils/songdownload.dart';
 class AudioProvider with ChangeNotifier {
   String _audioUrl = "";
   String _filePath = "";
-  String _title = "";
+  String? _title = "No Song";
   bool _isFile = false;
+  double _volume = 1.0;
 
   String get audioUrl => _audioUrl;
-  String get title => _title;
+  String? get title => _title;
   String get filePath => _filePath;
   bool get isFile => _isFile;
+  double get volume => _volume;
 
-  void setAudioUrl(String url, String title) {
+  void setAudioUrl(String url, String? title) {
     _audioUrl = url;
     _title = title;
     _isFile = false;
@@ -27,7 +29,13 @@ class AudioProvider with ChangeNotifier {
     _isFile = true;
     notifyListeners();
   }
+
+
+  void setVolume(double newVolume){
+    _volume = newVolume;
+  }
 }
+
 
 class DownloadProvider with ChangeNotifier {
   List<FileSystemEntity> _downloads = [];

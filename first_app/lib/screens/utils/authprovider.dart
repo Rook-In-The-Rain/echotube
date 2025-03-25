@@ -9,6 +9,8 @@ class AuthProviderClass extends ChangeNotifier {
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['https://www.googleapis.com/auth/youtube.readonly', 'https://www.googleapis.com/auth/youtube.force-ssl']);
   User? _user;
   String? _accessToken;
+  DateTime? _tokenExpiry;
+  String? _refreshToken;
 
   AuthProviderClass() {
     _user = _auth.currentUser;
@@ -18,7 +20,8 @@ class AuthProviderClass extends ChangeNotifier {
 
   bool get isSignedIn => _user != null;
 
-  Future<String?> get googleAccessToken async => getAccessToken();
+  Future<String?> get googleAccessToken async => getValidToken();
+  String? get refreshToken => _refreshToken;
 
   Future<void> signInWithGoogle() async {
     try {
@@ -32,19 +35,17 @@ class AuthProviderClass extends ChangeNotifier {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-
       final UserCredential userCredential =
           await _auth.signInWithCredential(credential);
-      
+      _refreshToken = userCredential.credential?.accessToken;
+      _tokenExpiry = DateTime.now().add(Duration(seconds: 3000));
+      await getValidToken();
+
       _user = userCredential.user;
       notifyListeners(); // Notify UI to update
     } catch (e) {
       print("Error signing in: $e");
     }
-  }
-
-  Future<String?> getAccessToken() async {
-      return _accessToken;
   }
 
   Future<void> signOut() async {
@@ -54,7 +55,42 @@ class AuthProviderClass extends ChangeNotifier {
     notifyListeners(); // Notify UI to update
   }
 
-  
+  Future<void> updateToken(String? newToken, String? newRefreshToken, int expiresIn) async {
+    _accessToken = newToken;
+    _refreshToken = newRefreshToken;
+    _tokenExpiry = DateTime.now().add(Duration(seconds: expiresIn - 300)); // 5 min buffer
+    notifyListeners();
+    
+    // Sync with backend
+    if (newToken != null) {
+      _accessToken = newToken;
+      notifyListeners();
+    }
+  }
+  Future<String?> getValidToken() async {
+    if (_accessToken == null || _tokenExpiry == null) return null;
+    
+    // Refresh if token expires in <5 mins
+    if (_tokenExpiry!.isBefore(DateTime.now())) {
+      final newToken = await _refreshTokenSilently();
+      return newToken;
+    }
+    return _accessToken;
+  }
+
+   Future<String?> _refreshTokenSilently() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) return null;
+      
+      final freshToken = await user.getIdToken(true); // Force refresh
+      await updateToken(freshToken, _refreshToken, 3600); // Assume 1h expiry
+      return freshToken;
+    } catch (e) {
+      print('Token refresh failed: $e');
+      return null;
+    }
+  }
 }
 
 
