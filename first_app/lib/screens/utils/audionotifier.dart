@@ -30,6 +30,11 @@ class AudioProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void setTitle(String title){
+    _title = title;
+    notifyListeners();
+  }
+
 
   void setVolume(double newVolume){
     _volume = newVolume;

@@ -16,11 +16,10 @@ class HomePageScreen extends StatefulWidget{
 
 class _HomePageScreenState extends State<HomePageScreen>{
     final TextEditingController _urlController = TextEditingController();
-    String? _songTitle;
 
     Future<void> getSong() async {
     setState(() {
-      _songTitle = "Fetching...";
+      Provider.of<AudioProvider>(context, listen: false).setTitle("Fetching...");
     });
     final String? refreshToken = Provider.of<AuthProviderClass>(context,listen: false).refreshToken;
     final String? accessToken = await Provider.of<AuthProviderClass>(context, listen: false).googleAccessToken;
@@ -34,11 +33,12 @@ class _HomePageScreenState extends State<HomePageScreen>{
     if (response.statusCode == 200) {
       setState(() {
         print("Got song title!");
-        Provider.of<AudioProvider>(context, listen: false).setAudioUrl(data["audio_url"], _songTitle);
+        Provider.of<AudioProvider>(context, listen: false).setTitle(data["title"]);
+        Provider.of<AudioProvider>(context, listen: false).setAudioUrl(data["audio_url"], Provider.of<AudioProvider>(context, listen: false).title);
       });
     } else {
       setState(() {
-        _songTitle = "Song not found";
+      Provider.of<AudioProvider>(context, listen: false).setTitle("No Song Found");
       });
     }
   }
@@ -46,12 +46,12 @@ class _HomePageScreenState extends State<HomePageScreen>{
 
   @override
   Widget build(BuildContext context){
-    _songTitle = Provider.of<AudioProvider>(context, listen: false).title;
+    String? songTitle = Provider.of<AudioProvider>(context, listen: false).title;
     return Scaffold(
       appBar: AppBar(title: const Text("Welcome to homepage")),
       body: Center(child:
         Column(children: [
-          Text("Input the song url below..current song: $_songTitle"),
+          Text("Input the song url below..current song: $songTitle"),
           SizedBox(height: 20),
           SizedBox(width: 200,
           child: TextField(controller: _urlController,

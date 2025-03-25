@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1074077598781",
+    "project_id": "harmoniaauth",
+    "storage_bucket": "harmoniaauth.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1074077598781:android:f77ed35bb2bab1ee321654",
+        "android_client_info": {
+          "package_name": "com.example.first_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1074077598781-guv3tignh511mbq3r0qvitsq110chr5s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2m7J47b1xeCF3Fss3X6AqQLXxEkfRsRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1074077598781-guv3tignh511mbq3r0qvitsq110chr5s.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1074077598781-qj9b1lluejsd0sst9ntsh8hf2hbqe358.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.firstApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
