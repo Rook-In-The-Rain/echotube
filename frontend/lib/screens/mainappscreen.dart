@@ -38,7 +38,7 @@ class _MainAppScreenState extends State<MainAppScreen>{
           DrawerHeader(decoration: BoxDecoration(color: Colors.blue), child: Text("Cool App", style: TextStyle(color: Colors.white, fontSize: 24))),
           ListTile(leading: Icon(Icons.home), title: Text("Home"), onTap: () => _navigateToScreen(HomePageScreen())),
           ListTile(leading: Icon(Icons.download), title: Text("Downloads"), onTap: () => _navigateToScreen(DownloadsScreen())),
-          ListTile(leading: Icon(Icons.star), title: Text("Liked Songs"), onTap: () => _navigateToScreen(LikedSongsScreen())),
+          ListTile(leading: Icon(Icons.star), title: Text("Liked Songs"), onTap: () => _navigateToScreen(Likedsongscreen())),
           ListTile(leading: Icon(Icons.backspace), title: Text("Log Out"), onTap: () async => await Provider.of<AuthProviderClass>(context, listen: false).signOut())
         ],
       )
