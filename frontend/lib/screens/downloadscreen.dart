@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:first_app/screens/utils/audionotifier.dart'; // Import the provider
+import 'package:first_app/screens/utils/audionotifier.dart';
 import 'package:flutter/services.dart';
+import 'package:path/path.dart' as path;
 
 
 class DownloadsScreen extends StatefulWidget {
@@ -18,7 +19,7 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
     Future.microtask(() =>
         Provider.of<DownloadProvider>(context, listen: false).loadDownloads());
   }
-    final ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
     void _handleKeyEvent(KeyEvent event) {
       if (event is KeyDownEvent) {
@@ -46,12 +47,13 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
       Scaffold(
         appBar: AppBar(title: Text("Downloads")),
         body: ListView.builder(
+          padding: EdgeInsets.only(bottom: 120),
           itemCount: downloads.length,
           controller: _scrollController,
           itemBuilder: (context, index) {
             final file = downloads[index];
             return ListTile(
-              title: Text(Uri.decodeComponent(file.path.split('/').last)), // Show filename
+              title: Text(path.basenameWithoutExtension(Uri.decodeComponent(file.path.split('/').last)), overflow: TextOverflow.ellipsis,), // Show filename
               trailing: IconButton(
                 icon: Icon(Icons.delete, color: Colors.red),
                 onPressed: () {

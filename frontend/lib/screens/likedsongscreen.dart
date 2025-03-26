@@ -6,15 +6,19 @@ import 'package:first_app/screens/utils/audionotifier.dart';
 import 'package:first_app/screens/utils/authprovider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/services.dart';
 
+class Likedsongscreen extends StatefulWidget {
 
-class LikedSongsScreen extends StatelessWidget {
-  const LikedSongsScreen({super.key});
+  @override
+  _LikedSongScreenState createState() => _LikedSongScreenState();
+}
+
+class _LikedSongScreenState extends State<Likedsongscreen> {
 
   Stream<List<Map<String, dynamic>>> getLikedSongs() {
     final User? user = FirebaseAuth.instance.currentUser;
     if (user == null) return Stream.value([]);
-
     return FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
@@ -24,23 +28,34 @@ class LikedSongsScreen extends StatelessWidget {
             snapshot.docs.map((doc) => doc.data()).toList());
   }
 
-
-  Future<void> clearLikedSongs() async {
-    final User? user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
-
-    final collectionRef = FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .collection('liked_songs');
-
-    final batch = FirebaseFirestore.instance.batch();
-    final snapshots = await collectionRef.get();
-    for (var doc in snapshots.docs) {
-      batch.delete(doc.reference);
+    final FocusNode _focusNode = FocusNode();
+    @override
+    void initState() {
+      super.initState();
+      _focusNode.requestFocus();
+      Future.microtask(() =>
+          Provider.of<DownloadProvider>(context, listen: false).loadDownloads());
     }
-    await batch.commit();
-  }
+
+  final ScrollController _scrollController = ScrollController();
+
+    void _handleKeyEvent(KeyEvent event) {
+      if (event is KeyDownEvent) {
+        if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+          _scrollController.animateTo(
+            _scrollController.offset + 50, // Scroll down
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeIn,
+          );
+        } else if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+          _scrollController.animateTo(
+            _scrollController.offset - 50, // Scroll up
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeOut,
+          );
+        }
+      }
+    }
 
       Future<void> getSong(context, youtubelink) async {
           Provider.of<AudioProvider>(context, listen: false).setTitle("Fetching...", autoUpdate: false);
@@ -64,16 +79,10 @@ class LikedSongsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return KeyboardListener(focusNode: _focusNode, autofocus: true, onKeyEvent: _handleKeyEvent, child:
+ Scaffold(
       appBar: AppBar(
-        title: const Text("Liked Songs"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.delete_forever),
-            onPressed: clearLikedSongs,
-            tooltip: "Clear all liked songs",
-          ),
-        ],
+        title: const Text("Liked Songs")
       ),
       body: StreamBuilder<List<Map<String, dynamic>>>(
         stream: getLikedSongs(),
@@ -87,7 +96,9 @@ class LikedSongsScreen extends StatelessWidget {
 
           final songs = snapshot.data!;
           return ListView.builder(
+            padding: EdgeInsets.only(bottom: 120),
             itemCount: songs.length,
+            controller: _scrollController,
             itemBuilder: (context, index) {
               final song = songs[index];
               return ListTile(
@@ -100,6 +111,7 @@ class LikedSongsScreen extends StatelessWidget {
           );
         },
       ),
+      )
     );
   }
 }

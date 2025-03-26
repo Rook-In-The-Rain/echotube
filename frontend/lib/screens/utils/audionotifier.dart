@@ -51,6 +51,15 @@ class AudioProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<bool> checkIfLiked(String? songID) async{
+    final user = _auth.currentUser;
+    final songRef = _firestore.collection('users').doc(user?.uid).collection('liked_songs').doc(songID);
+    if(songID == null) return false;
+    print(utf8.decode(base64Decode(songID)));
+    DocumentSnapshot snap = await songRef.get();
+    return snap.exists;
+  }
+
   Future<void> toggleLikeSong(String? url, String? title) async {
     if (_isLiking || url == null) return; // Prevent spamming
     _isLiking = true;
@@ -58,8 +67,7 @@ class AudioProvider with ChangeNotifier {
     final user = _auth.currentUser;
     if (user == null) return;
     String songID = base64Url.encode(utf8.encode(url));
-    bool alreadyLiked = _likedSongs.contains(url);
-
+    bool alreadyLiked = await checkIfLiked(songID);
     final songRef = _firestore.collection('users').doc(user.uid).collection('liked_songs').doc(songID);
 
     if (alreadyLiked) {
@@ -76,10 +84,14 @@ class AudioProvider with ChangeNotifier {
   }
 
   void setAudioUrl(String url, String? title) {
-    _audioUrl = url;
-    _title = title;
-    _isFile = false;
-    notifyListeners();  // Updates UI when URL changes
+    checkIfLiked(base64Url.encode(utf8.encode(_youtubeUrl ?? ""))).then((like) {
+      _audioUrl = url;
+      _title = title;
+      _isFile = false;
+      _isLiked = like;
+      print(like);
+      notifyListeners();
+    });
   }
 
   void setFilePath(String path, String title){
