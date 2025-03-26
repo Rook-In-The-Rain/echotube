@@ -68,17 +68,17 @@ class _HomePageScreenState extends State<HomePageScreen>{
   Widget build(BuildContext context){
     String? songTitle = Provider.of<AudioProvider>(context, listen: false).title;
     return Scaffold(
-      appBar: AppBar(title: const Text("Welcome to homepage")),
+      appBar: AppBar(title: const Text("Home Page!"), centerTitle: true),
       body: Center(child:
         Column(children: [
-          Text("Input the song url below..current song: $songTitle"),
+          Text("Input the song url below -- Current Song: $songTitle", textAlign: TextAlign.center),
           SizedBox(height: 20),
           SizedBox(width: 200,
           child: TextField(controller: _urlController,
               decoration: const InputDecoration(labelText: "Enter URL"),)
           ),
           SizedBox(height: 20),
-          ElevatedButton(onPressed: getSong, child: Text("Update URL"))
+          ElevatedButton(onPressed: getSong, child: Text("Fetch URL"))
         ],)
       ),
     );

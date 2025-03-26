@@ -4,8 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:first_app/screens/utils/audionotifier.dart';
 import 'package:first_app/screens/utils/songdownload.dart';
 import 'dart:io';
-// import 'package:http/http.dart' as http;
-// import 'dart:convert';
 
 class AudioPlayerWidget extends StatefulWidget{
   const AudioPlayerWidget({super.key});
@@ -209,16 +207,16 @@ class PlaybackControlsWidget extends StatelessWidget{
       children: [
           Consumer<AudioProvider>(
         builder: (context, provider, child) {
-          return IconButton(
+          return SizedBox(width: 2, child: IconButton(
             icon: Icon(provider.isLiked ? Icons.star : Icons.star_border),
             onPressed: () {
               provider.likeSong(); // Just update liked state, not full rebuild
             },
-          );
+          ));
         },
       ),
       if (Platform.isMacOS) const Spacer(flex: 2),
-        Expanded(flex: 5, child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Expanded(flex: (Platform.isMacOS ? 5 : 10), child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         IconButton(onPressed: () async { await onDownload(); print("Download completed!");}, icon: Icon(Icons.download)),
         IconButton(onPressed: onPlayPause, icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow), color: Colors.white),
         IconButton(

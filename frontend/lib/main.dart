@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Simple Flutter App with Backend and Frontend',
+      title: 'Echotube',
         theme: ThemeData.light(),   // Light theme
         darkTheme: ThemeData.dark(), // Dark theme
         themeMode: ThemeMode.dark, 

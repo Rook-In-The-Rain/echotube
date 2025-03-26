@@ -1,4 +1,4 @@
-# Weird YouTube Audio Streaming App
+# Echotube (Weird YouTube Audio Streaming App)
 
 A Flutter + FastAPI-based mobile and desktop application that allows users to stream and download audio from YouTube videos. The app supports authentication via Firebase, stores liked songs, and syncs across devices.
 

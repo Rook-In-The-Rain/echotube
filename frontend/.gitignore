@@ -101,8 +101,10 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-frontend/build/
+*/build/
 /backend
+*/backend/
+build/
 
 # Symbolication related
 app.*.symbols
@@ -115,3 +117,13 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# iOS/macOS
+**/GoogleService-Info.plist
+ios/Runner/DebugProfile.entitlements  # If custom entitlements exist
+ios/Flutter/.last_build_id
+
+# Android
+android/app/google-services.json
+android/app/keystore.properties
+android/local.properties
+android/key.properties

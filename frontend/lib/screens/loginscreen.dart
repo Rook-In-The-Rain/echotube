@@ -12,7 +12,7 @@ class LoginScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Welcome to HarmoniaAuth!", style: TextStyle(fontSize: 24)),
+            Text("Welcome to Echotube!", style: TextStyle(fontSize: 24)),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
